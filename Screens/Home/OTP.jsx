@@ -16,7 +16,7 @@ const OTP = () => {
       />
       <View style={styles.arrowIconContainer}>
             <AntDesign name="arrowleft" size={24} color="black" />
-         </View>
+        </View>
       <View style={styles.itemsContainer}>
         <View style={styles.verifyTextContainer}>
           <Text style={styles.verifyHeader}>Verify your identity</Text>

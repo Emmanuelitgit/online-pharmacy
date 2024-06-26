@@ -19,4 +19,42 @@ export const slides = [
     }
   ];
 
+  export const products = [
+    {
+      id:1,
+      title:'Novolog',
+      price:'$22',
+      image: require('../assets/product 1.png')
+    },
+    {
+      id:2,
+      title:'Lufart',
+      price:'$30',
+      image: require('../assets/product 2.png')
+    },
+    {
+      id:3,
+      title:'Inhaler',
+      price:'$20',
+      image: require('../assets/product 3.png')
+    },
+    {
+      id:4,
+      title:'Collagen',
+      price:'$70',
+      image: require('../assets/product 4.png')
+    },
+    {
+      id:5,
+      title:'Septilin',
+      price:'$55',
+      image: require('../assets/product 5.png')
+    },
+    {
+      id:6,
+      title:'Procold',
+      price:'$50',
+      image: require('../assets/product 6.png')
+    }
+  ]
   
