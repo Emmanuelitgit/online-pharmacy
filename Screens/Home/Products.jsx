@@ -1,8 +1,7 @@
 import React from 'react'
 import { View, Text, SafeAreaView, StyleSheet, FlatList, StatusBar, Pressable, Image} from 'react-native'
 import ProductItems from '../../Components/ProductItems';
-import AntDesign from '@expo/vector-icons/AntDesign';
-import { MaterialIcons, Foundation } from '@expo/vector-icons';
+import { AntDesign, AntDesign } from '@expo/vector-icons';
 import { SIZES } from '../../Constants/Theme';
 import Card from '../../Components/Card';
 
@@ -18,7 +17,7 @@ const Products = () => {
       />
      <View style={styles.itemsContainer}>
        <View style={styles.iconContainer}>
-         <AntDesign name="message1" size={24} color="black" />
+         <AntDesign name="shoppingcart" size={24} color="black" />
          <MaterialIcons name="notifications" size={24} color="black" />
          <View style={styles.badge}>
             <Text style={styles.badgeValue}>1</Text>
