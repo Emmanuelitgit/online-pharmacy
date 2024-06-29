@@ -1,6 +1,7 @@
 import React from 'react'
 import { View, Text, SafeAreaView, StyleSheet, Image, ScrollView } from 'react-native'
-import { SIZES } from '../Constants/Theme'
+import { SIZES } from '../Constants/Theme';
+import { AntDesign, MaterialIcons} from '@expo/vector-icons';
 import { Foundation } from '@expo/vector-icons';
 
 const ProductItems = ({title, imageFile, price}) => {
@@ -22,7 +23,7 @@ const ProductItems = ({title, imageFile, price}) => {
                 ))}
                </View>
             </View>
-            <Text style={priceValue}>{price}</Text>
+            <Text style={styles.priceValue}>{price}</Text>
         </View>
         </ScrollView>
     </View>

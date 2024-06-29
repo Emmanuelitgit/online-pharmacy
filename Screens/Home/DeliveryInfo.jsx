@@ -1,16 +1,20 @@
 import React from 'react'
+import { AntDesign, MaterialIcons} from '@expo/vector-icons';
 import { Text, View, SafeAreaView, StyleSheet, TextInput, Pressable, StatusBar, Image } from 'react-native';
+import { SIZES } from '../../Constants/Theme';
 
 
 const DeliveryInfo = () => {
   return (
     <SafeAreaView>
+        <StatusBar backgroundColor={'white'} barStyle={'dark-content'} />
         <View style={styles.itemsContainer}>
         <View style={styles.arrowIconContainer}>
          <AntDesign name="arrowleft" size={24} color="black" />
+         <Text style={styles.headerText}>Checkout</Text>
         </View>
-        <View style={styles.headerContainer}>
-          <Text style={styles.headerText}>Checkout</Text>
+        <View style={styles.infoTextContainer}>
+          <Text style={styles.infoText}>Delivery Information</Text>
         </View>
          <View style={styles.inputsContainer}>
          <View style={styles.inputContainer}>
@@ -43,8 +47,10 @@ const styles = StyleSheet.create({
         height:'100%'
       },
       arrowIconContainer:{
-        marginLeft:'7%',
-        paddingTop:'10%'
+        paddingTop:'3%',
+        flexDirection:'row',
+        gap:SIZES.width*0.25,
+        paddingRight:'30%'
       },
       itemsContainer:{
         alignItems: 'center',
@@ -52,12 +58,21 @@ const styles = StyleSheet.create({
         height:'100%',
         paddingTop:'15%'
       },
-      headerContainer:{
+      infoTextContainer:{
         display:'flex',
-        paddingBottom:'5%'
+        paddingBottom:'5%',
+        paddingTop:SIZES.height*0.04
+      },
+      infoText:{
+
       },
       headerText:{
-        fontSize:20
+        fontSize:20,
+        fontWeight:'bold'
+      },
+      inputsContainer:{
+        width:'100%',
+        alignItems:'center'
       },
       inputContainer:{
         margin:'5%',
@@ -76,7 +91,11 @@ const styles = StyleSheet.create({
         width: '92%',
         paddingHorizontal: 10,
       },
-      buttonContainer:{},
+      buttonContainer:{
+        paddingTop:'8%',
+        width:'100%',
+        alignItems:'center'
+      },
       btn:{
         backgroundColor:'blue',
         padding:'3%',

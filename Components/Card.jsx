@@ -28,7 +28,7 @@ const Card = () => {
         renderItem={({item}) => <ProductItems title={item.title} imageFile={item.image} price={item.price} />}
         keyExtractor={item => item.id}
         contentContainerStyle={styles.contentContainer}
-        scrollEnabled
+        scrollEnabled={true}
        />
     </View>
   )

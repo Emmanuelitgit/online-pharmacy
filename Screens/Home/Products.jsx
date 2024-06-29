@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Text, SafeAreaView, StyleSheet, FlatList, StatusBar, Pressable, Image} from 'react-native'
 import ProductItems from '../../Components/ProductItems';
-import { AntDesign, AntDesign } from '@expo/vector-icons';
+import { AntDesign, MaterialIcons} from '@expo/vector-icons';
 import { SIZES } from '../../Constants/Theme';
 import Card from '../../Components/Card';
 
