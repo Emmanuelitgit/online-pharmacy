@@ -9,10 +9,11 @@ import Product from './Screens/Home/Product';
 import CartScreen from './Screens/Home/CartScreen';
 import PaymentMethod from './Screens/Home/PaymentMethod';
 import PaymentSuccess from './Screens/Home/PaymentSuccess';
+import Profile from './Screens/Home/Profile';
 
 export default function App() {
   return (
-  <PaymentSuccess/>
+  <Profile/>
   );
 }
 
