@@ -7,10 +7,11 @@ import Products from './Screens/Home/Products';
 import DeliveryInfo from "./Screens/Home/DeliveryInfo"
 import Product from './Screens/Home/Product';
 import CartScreen from './Screens/Home/CartScreen';
+import PaymentMethod from './Screens/Home/PaymentMethod';
 
 export default function App() {
   return (
-  <CartScreen/>
+  <PaymentMethod/>
   );
 }
 
