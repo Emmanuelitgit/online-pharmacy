@@ -49,11 +49,11 @@ const CartScreen = () => {
                 <Text style={styles.priceInfoValue}>18</Text>
             </View>
             <View style={styles.priceInfo}>
-                <Text style={styles.priceInfoText}>Sub Total</Text>
+                <Text style={styles.priceInfoText}>Delivery fee</Text>
                 <Text style={styles.priceInfoValue}>18</Text>
             </View>
             <View style={styles.priceInfo}>
-               <Text style={styles.priceInfoText}>Sub Total</Text>
+               <Text style={styles.priceInfoText}>Discount</Text>
                <Text style={styles.priceInfoValue}>18</Text>
             </View>
         </View>
