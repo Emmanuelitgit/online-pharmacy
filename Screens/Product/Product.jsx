@@ -2,9 +2,10 @@ import React from 'react'
 import { View, Text, SafeAreaView, StyleSheet, Image, StatusBar, Pressable, ScrollView } from 'react-native'
 import { SIZES } from '../../Constants/Theme'
 import { Foundation } from '@expo/vector-icons';
+import { AntDesign} from '@expo/vector-icons';
 
 
-const Product = () => {
+const Product = ({navigation}) => {
 
     const stars = [1,2,3,4]
 
@@ -17,6 +18,14 @@ const Product = () => {
         <StatusBar backgroundColor={'white'} barStyle={'dark-content'} />
         <ScrollView>
         <View style={styles.itemsContainer}>
+        <Pressable style={styles.arrowIconContainer}>
+         <AntDesign 
+           name="arrowleft" 
+           size={24} 
+           color="black" 
+           onPress={() => navigation.goBack()}
+           />
+        </Pressable> 
         <View style={styles.cardContainer}>
             <View style={styles.imageContainer}>
                 <Image source={require("../../assets/product 1.png")} style={styles.image}/>
@@ -54,7 +63,9 @@ const Product = () => {
         </View>
         <View style={styles.buttonContainer}>
         <Pressable
-         style={styles.btnContainer}>
+         style={styles.btnContainer}
+         onPress={()=>navigation.navigate("Cart")}
+         >
           <Text style={styles.btnText}>Add to cart</Text>
         </Pressable>
         </View>
@@ -69,6 +80,11 @@ const styles = StyleSheet.create({
         flex:1,
         alignItems:'center'
     },
+    arrowIconContainer:{
+        paddingRight:'80%',
+        paddingLeft:'3%',
+        paddingBottom:'2%'
+      },
     itemsContainer:{
         paddingTop:"7%",
         width:"100%",

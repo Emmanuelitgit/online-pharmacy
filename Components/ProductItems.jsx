@@ -1,16 +1,17 @@
 import React from 'react'
-import { View, Text, SafeAreaView, StyleSheet, Image, ScrollView } from 'react-native'
+import { View, Text, SafeAreaView, StyleSheet, Image, ScrollView, Pressable } from 'react-native'
 import { SIZES } from '../Constants/Theme';
 import { AntDesign, MaterialIcons} from '@expo/vector-icons';
 import { Foundation } from '@expo/vector-icons';
 
-const ProductItems = ({title, imageFile, price}) => {
+const ProductItems = ({title, imageFile, price, handleNavigate}) => {
 
     const stars = [1,2,3,4]
 
   return (
     <View style={styles.container}>
         <ScrollView>
+        <Pressable onPress={handleNavigate}>
         <View style={styles.cardContainer}>
             <View style={styles.imageContainer}>
                 <Image source={imageFile} style={styles.image}/>
@@ -25,6 +26,7 @@ const ProductItems = ({title, imageFile, price}) => {
             </View>
             <Text style={styles.priceValue}>{price}</Text>
         </View>
+        </Pressable>
         </ScrollView>
     </View>
   )
@@ -57,8 +59,8 @@ const styles = StyleSheet.create({
     },
     starHeaderContainer:{
         display:'flex',
-        justifyContent:'space-between',
-        flexDirection:'row'
+        justifyContent:'space-around',
+        flexDirection:'row',
     },
     title:{
         color:'black'
@@ -70,7 +72,8 @@ const styles = StyleSheet.create({
         flexDirection:'row'
     },
     priceValue:{
-        fontSize:15
+        fontSize:15,
+        paddingLeft:'5%'
     }
 })
 export default ProductItems

@@ -1,27 +1,93 @@
-import { Text, View, SafeAreaView, StyleSheet, TextInput, Pressable, StatusBar, Image } from 'react-native';
+import { Text, View, SafeAreaView, StyleSheet, Image, TextInput, Pressable, StatusBar,Alert} from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
+import { LoadingModal } from "react-native-loading-modal";
+import { useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 
 
 const Login = ({navigation}) => {
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('')
+  const [loading, setLoading] = useState(false)
+
+  const handleChange = (key, value) => {
+    if (key === 'email') {
+      setEmail(value);
+    } else if (key === 'password') {
+      setPassword(value);
+    }
+  };
+
+  const handleLogin = async () => {
+    try {
+      setLoading(true);
+  
+      const response = await axios.post('https://pharmacy-ordering-server.onrender.com/login',
+        {
+          email,
+          password,
+        }
+      );
+      if (response.status === 200) {
+        const {name, email, file, phone} = response.data.user
+        const {refreshToken} = response.data
+        const {token} = response.data 
+        if(file){
+          await AsyncStorage.setItem("userImage", file)
+        } 
+        await AsyncStorage.multiSet([
+          ['userName', name],
+          ['userEmail', email],
+          ['refreshToken', refreshToken],
+          ['token', token],
+          ['phone', phone.toString()],
+        ]);        
+        Alert.alert('Success✔️', 'Logged in successfully');
+        setEmail('');
+        setPassword('');
+        navigation.navigate('Products');
+      }
+    } catch (error) {
+      console.log(error)
+      // Alert.alert('Invalid⚠️', 'Incorrect password or username');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar
          backgroundColor="white" 
          barStyle="dark-content" 
       />
-       <View style={styles.arrowIconContainer}>
+       <Pressable style={styles.arrowIconContainer}
+       onPress={()=>navigation.goBack()}
+       >
          <AntDesign name="arrowleft" size={24} color="black" />
-        </View>
+        </Pressable>
        <View style={styles.itemsContainer}>
        <View style={styles.headerContainer}>
           <Text style={styles.headerText}>Log in to your account</Text>
         </View>
         <View style={styles.inputContainer}>
-          <TextInput placeholder='Email' style={styles.input}/>
+          <TextInput placeholder='Email' 
+           style={styles.input}
+           onChangeText={(value) => handleChange('email', value)}
+           value={email}
+           />
         </View>
         <View style={styles.inputContainer}>
-          <TextInput placeholder='Password' style={styles.input}/>
+          <TextInput placeholder='Password' 
+           style={styles.input}
+          //  secureTextEntry
+           onChangeText={(value) => handleChange('password', value)}
+           value={password}
+           />
           <Feather name="eye" size={24} color="black" style={styles.inputIcon}/>
         </View>
         <View style={styles.forgotContainer}>
@@ -29,7 +95,7 @@ const Login = ({navigation}) => {
            <Text style={styles.clickHere}>click here</Text>
         </View>
         <Pressable
-         onPress={()=>navigation.navigate("Login")} 
+         onPress={handleLogin} 
          style={styles.btnContainer}>
           <Text style={styles.btnText}>Login</Text>
         </Pressable>
@@ -49,6 +115,7 @@ const Login = ({navigation}) => {
           color:'blue'
         }}>Register</Text>
         </View>
+        {loading && <LoadingModal modalVisible={true} />}
        </View>
     </SafeAreaView>
   )

@@ -3,22 +3,87 @@ import { View, Text, StyleSheet, SafeAreaView, ScrollView, Pressable, TextInput,
 import { AntDesign, Feather} from '@expo/vector-icons';
 import { FontAwesome5, FontAwesome6, Fontisto } from '@expo/vector-icons';
 import { SIZES } from '../../Constants/Theme';
+import { useEffect, useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const Profile = () => {
+
+const Profile = ({navigation}) => {
+
+  const [profile, setProfile] = useState({
+    name:'',
+    email:'',
+    file:''
+  })
+
+  const handleLogout = async () => {
+    await AsyncStorage.multiRemove([
+      "userName",
+      "userEmail",
+      "userImage",
+      "refreshToken",
+      "token",
+      "quantity",
+      "product_id"
+    ]);
+    navigation.navigate("Login")
+  };
+
+  useEffect(() => {
+    const getProfile = async () => {
+      const quantity = await AsyncStorage.getItem("quantity");
+      const results = await AsyncStorage.multiGet([
+        "userName",
+        "userEmail",
+        "userImage",
+        "phone",
+      ]);
+      const name = results[0][1];
+      const email = results[1][1];
+      const file = results[2][1];
+      const phone = parseInt(results[3][1], 10);
+      setProfile({
+        name,
+        email,
+        file,
+        phone
+      }); 
+      // setImage(file)
+    };
+    getProfile();
+  }, []);
+
+
   return (
     <SafeAreaView style={styles.container}>
         <StatusBar backgroundColor={'#0C07F1CC'} barStyle={'light-content'} />
         <View style={styles.itemsContainer}>
-        <View style={styles.arrowIconContainer}>
+        <Pressable style={styles.arrowIconContainer}
+        onPress={()=>navigation.goBack()}
+        >
          <AntDesign name="arrowleft" size={24} color="white" />
-        </View>
+        </Pressable>
         <View style={styles.userNameContainer}>
             <View style={styles.profileImageContainer}>
-                <Image source={require("../../assets/profile.png")}/>
+              {
+                profile.file && 
+                <Image 
+                source={{uri:`https://pharmacy-ordering-server.onrender.com/${profile?.file}`}}
+                resizeMode="cover" 
+                style={styles.profile} 
+                />
+              }
+
+              {
+                !profile.file && 
+                <Image 
+                source={require("../../assets/slider.png")}
+                style={styles.profile} 
+                />
+              }      
             </View>
             <View>
-                <Text>Zaid Ibn</Text>
-                <Text>0597893082</Text>
+                <Text>{profile.name}</Text>
+                <Text>{profile.phone}</Text>
             </View>
         </View>
         <View style={styles.accountInfoContainer}>
@@ -37,10 +102,12 @@ const Profile = () => {
             <FontAwesome5 name="book-medical" size={24} color="blue" />
             <Text>Medical Records</Text>
             </View>
-            <View style={styles.accountInfo}>
+            <Pressable style={styles.accountInfo}
+            onPress={handleLogout}
+            >
             <Feather name="log-out" size={24} color="blue" />
             <Text>Logout</Text>
-            </View>
+            </Pressable>
         </View>
         </View>
     </SafeAreaView>
@@ -60,18 +127,18 @@ const styles = StyleSheet.create({
         paddingRight:'80%',
         paddingLeft:'3%',
         backgroundColor:'#0C07F1CC',
-        padding:'25%'
+        padding:'25%',
       },
       userNameContainer:{
-        height: SIZES.height * 0.15,
-        width:SIZES.width*0.5,  
+        height: SIZES.height * 0.17,
+        width:SIZES.width*0.65,  
         borderRadius: 10,
         backgroundColor: '#fff',
         shadowColor: '#000',
         elevation: 5,
         position:'absolute',
         top:'15%',
-        left:'25%',
+        left:'20%',
         alignItems:'center',
         flexDirection:'row',
         gap:SIZES.width*0.05
@@ -92,6 +159,11 @@ const styles = StyleSheet.create({
       accountInfo:{
         flexDirection:'row',
         gap:SIZES.width*0.05
+      },
+      profile:{
+        height:SIZES.height*0.075,
+        width:SIZES.width*0.15,
+        borderRadius:50
       }
 })
 

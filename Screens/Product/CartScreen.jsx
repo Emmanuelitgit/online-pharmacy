@@ -5,7 +5,7 @@ import { SIZES } from '../../Constants/Theme'
 import { Foundation } from '@expo/vector-icons';
 
 
-const CartScreen = () => {
+const CartScreen = ({navigation}) => {
 
     const stars = [1,2,3,4]
 
@@ -18,9 +18,14 @@ const CartScreen = () => {
         <StatusBar backgroundColor={'white'} barStyle={'dark-content'} />
         <ScrollView>
         <View style={styles.itemsContainer}>
-        <View style={styles.arrowIconContainer}>
-         <AntDesign name="arrowleft" size={24} color="black" />
-        </View>
+        <Pressable style={styles.arrowIconContainer}>
+         <AntDesign 
+          name="arrowleft" 
+          size={24} 
+          color="black"
+          onPress={() => navigation.goBack()} 
+          />
+        </Pressable>
         <View style={styles.border}>
         <View style={styles.cardMainContaimer}>
         <View style={styles.cardContainer}>
@@ -64,7 +69,9 @@ const CartScreen = () => {
         </View>
         <View style={styles.buttonContainer}>
         <Pressable
-         style={styles.btnContainer}>
+         style={styles.btnContainer}
+         onPress={()=>navigation.navigate("DeliveryInfo")}
+         >
           <Text style={styles.btnText}>Checout</Text>
         </Pressable>
         </View>

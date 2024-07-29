@@ -3,14 +3,19 @@ import { View, Text, StyleSheet, SafeAreaView, ScrollView, Pressable, TextInput,
 import { AntDesign} from '@expo/vector-icons';
 import { SIZES } from '../../Constants/Theme';
 
-const PaymentMethod = () => {
+const PaymentMethod = ({navigation}) => {
   return (
     <SafeAreaView>
         <StatusBar backgroundColor={'white'} barStyle={'dark-content'} />
         <View style={styles.itemsContainer}>
-        <View style={styles.arrowIconContainer}>
-         <AntDesign name="arrowleft" size={24} color="black" />
-        </View>         
+        <Pressable style={styles.arrowIconContainer}>
+         <AntDesign 
+          name="arrowleft" 
+          size={24} 
+          color="black"
+          onPress={() => navigation.goBack()} 
+          />
+        </Pressable>         
         <View style={styles.headerTextContainer}>
             <Text style={styles.headerText}>Select payment method</Text>
         </View>
@@ -26,7 +31,9 @@ const PaymentMethod = () => {
          </View>
          <View  style={styles.buttonContainer}>
          <Pressable
-          style={styles.btn}>
+          style={styles.btn}
+          onPress={()=>navigation.navigate("PaymentSuccess")}
+          >
           <Text style={styles.btnText}>Make payment</Text>
         </Pressable>
          </View>

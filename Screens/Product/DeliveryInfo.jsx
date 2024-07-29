@@ -4,15 +4,20 @@ import { Text, View, SafeAreaView, StyleSheet, TextInput, Pressable, StatusBar, 
 import { SIZES } from '../../Constants/Theme';
 
 
-const DeliveryInfo = () => {
+const DeliveryInfo = ({navigation}) => {
   return (
     <SafeAreaView>
         <StatusBar backgroundColor={'white'} barStyle={'dark-content'} />
         <View style={styles.itemsContainer}>
-        <View style={styles.arrowIconContainer}>
-         <AntDesign name="arrowleft" size={24} color="black" />
+        <Pressable style={styles.arrowIconContainer}>
+         <AntDesign 
+          name="arrowleft" 
+          size={24} 
+          color="black" 
+          onPress={() => navigation.goBack()}
+          />
          <Text style={styles.headerText}>Checkout</Text>
-        </View>
+        </Pressable>
         <View style={styles.infoTextContainer}>
           <Text style={styles.infoText}>Delivery Information</Text>
         </View>
@@ -32,7 +37,9 @@ const DeliveryInfo = () => {
          </View>
          <View  style={styles.buttonContainer}>
          <Pressable
-          style={styles.btn}>
+          style={styles.btn}
+          onPress={()=>navigation.navigate("PaymentMethod")}
+          >
           <Text style={styles.btnText}>Proceed</Text>
         </Pressable>
          </View>

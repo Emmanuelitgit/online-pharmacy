@@ -3,14 +3,19 @@ import { View, Text, StyleSheet, SafeAreaView, ScrollView, Pressable, TextInput,
 import { AntDesign} from '@expo/vector-icons';
 import { SIZES } from '../../Constants/Theme';
 
-const PaymentSuccess = () => {
+const PaymentSuccess = ({navigation}) => {
   return (
 <SafeAreaView style={styles.container}>
     <StatusBar backgroundColor={'white'} barStyle={'dark-content'} />
     <View style={styles.itemsContainer}>
-        <View style={styles.arrowIconContainer}>
-         <AntDesign name="arrowleft" size={24} color="black" />
-        </View>         
+        <Pressable style={styles.arrowIconContainer}>
+         <AntDesign 
+           name="arrowleft" 
+           size={24} 
+           color="black" 
+           onPress={() => navigation.goBack()}
+           />
+        </Pressable>         
         <View style={styles.headerTextContainer}>
             <Text style={styles.headerText}>Your order ID: 036748373836</Text>
         </View>
@@ -20,11 +25,15 @@ const PaymentSuccess = () => {
         </View>
         <View  style={styles.buttonContainer}>
          <Pressable
-          style={[styles.btn, styles.btnBlue]}>
+          style={[styles.btn, styles.btnBlue]}
+          onPress={()=>navigation.navigate("TrackProduct")}
+          >
           <Text style={[styles.btnText, styles.btnTextWhite]}>Track your item</Text>
         </Pressable>
         <Pressable
-          style={[styles.btn, styles.btnWhite]}>
+          style={[styles.btn, styles.btnWhite]}
+          onPress={()=>navigation.navigate("Home")}
+          >
           <Text style={[styles.btnText, styles.btnTextBlack]}>Return Home</Text>
         </Pressable>
          </View>
@@ -70,7 +79,7 @@ const styles = StyleSheet.create({
         width: '80%',
         borderRadius: 5, 
         paddingHorizontal: 10,
-        marginBottom: '7%',
+        marginBottom: '2%',
         alignItems:'center',
         marginTop:'10%'
       },
