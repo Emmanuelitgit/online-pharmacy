@@ -32,7 +32,7 @@ const PaymentSuccess = ({navigation}) => {
         </Pressable>
         <Pressable
           style={[styles.btn, styles.btnWhite]}
-          onPress={()=>navigation.navigate("Home")}
+          onPress={()=>navigation.navigate("Products")}
           >
           <Text style={[styles.btnText, styles.btnTextBlack]}>Return Home</Text>
         </Pressable>

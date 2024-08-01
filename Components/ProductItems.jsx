@@ -14,7 +14,7 @@ const ProductItems = ({title, imageFile, price, handleNavigate}) => {
         <Pressable onPress={handleNavigate}>
         <View style={styles.cardContainer}>
             <View style={styles.imageContainer}>
-                <Image source={imageFile} style={styles.image}/>
+                <Image source={{uri:`https://pharmacy-ordering-server.onrender.com/${imageFile}`}} style={styles.image}/>
             </View>
             <View style={styles.starHeaderContainer}>
                 <Text style={styles.title}>{title}</Text>

@@ -1,10 +1,45 @@
-import React from 'react'
-import { AntDesign, MaterialIcons} from '@expo/vector-icons';
-import { Text, View, SafeAreaView, StyleSheet, TextInput, Pressable, StatusBar, Image } from 'react-native';
+import React, { useState } from 'react'
+import { AntDesign} from '@expo/vector-icons';
+import { Text, View, SafeAreaView, StyleSheet, TextInput, Pressable, StatusBar} from 'react-native';
 import { SIZES } from '../../Constants/Theme';
-
+import { useEffect } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const DeliveryInfo = ({navigation}) => {
+
+  const [profile, setProfile] = useState({
+    name:'',
+    email:'',
+    phone:''
+  })
+  const [location , setLocation] = useState('')
+
+  const handleDeliveryInfo = async()=>{
+    await AsyncStorage.setItem("location", location)
+    navigation.navigate("PaymentMethod")
+  }
+
+  useEffect(() => {
+    const getProfile = async () => {
+      const quantity = await AsyncStorage.getItem("quantity");
+      const results = await AsyncStorage.multiGet([
+        "userName",
+        "userEmail",
+        "phone",
+      ]);
+      const name = results[0][1];
+      const email = results[1][1];
+      const phone = results[2][1];
+
+      setProfile({
+        name,
+        email,
+        phone
+      }); 
+    };
+    getProfile();
+  }, []);
+
   return (
     <SafeAreaView>
         <StatusBar backgroundColor={'white'} barStyle={'dark-content'} />
@@ -23,22 +58,39 @@ const DeliveryInfo = ({navigation}) => {
         </View>
          <View style={styles.inputsContainer}>
          <View style={styles.inputContainer}>
-          <TextInput placeholder='Name' style={styles.input}/>
+          <TextInput placeholder='Name' 
+           style={styles.input}
+           value={profile.name}
+           />
         </View>
         <View style={styles.inputContainer}>
-          <TextInput placeholder='Email' style={styles.input}/>
+          <TextInput placeholder='Email' 
+           style={styles.input}
+           value={profile.email}
+           />
         </View>
         <View style={styles.inputContainer}>
-          <TextInput placeholder='Phone' style={styles.input}/>
+          <TextInput placeholder='Phone' 
+           style={styles.input}
+           value={profile.phone}
+           
+           />
         </View>
         <View style={styles.inputContainer}>
-          <TextInput placeholder='Address' style={styles.input}/>
+        <TextInput
+          placeholder="Location"
+          style={styles.input}
+          onChangeText={(text) => {
+          setLocation(text);
+        }}
+        value={location}
+      />
         </View>
          </View>
          <View  style={styles.buttonContainer}>
          <Pressable
           style={styles.btn}
-          onPress={()=>navigation.navigate("PaymentMethod")}
+          onPress={handleDeliveryInfo}
           >
           <Text style={styles.btnText}>Proceed</Text>
         </Pressable>

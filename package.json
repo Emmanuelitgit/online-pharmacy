@@ -17,11 +17,16 @@
     "expo-splash-screen": "~0.27.5",
     "expo-status-bar": "~1.12.1",
     "expo-updates": "~0.25.21",
+    "jwt-decode": "^4.0.0",
     "react": "18.2.0",
     "react-native": "0.74.1",
     "react-native-app-intro-slider": "^4.0.4",
+    "react-native-dotenv": "^3.4.11",
+    "react-native-keychain": "^8.2.0",
     "react-native-loading-modal": "^1.1.0",
-    "react-native-maps": "1.14.0"
+    "react-native-maps": "1.14.0",
+    "react-native-paystack-webview": "^4.1.4",
+    "react-native-webview": "13.8.6"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

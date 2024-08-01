@@ -1,17 +1,43 @@
-import React from 'react'
-import { View, SafeAreaView, Text, StyleSheet, StatusBar, Image, Pressable, ScrollView } from 'react-native'
+import React, { useState } from 'react'
+import { View, SafeAreaView, Text, StyleSheet, StatusBar, Image, Pressable, ScrollView, Alert } from 'react-native'
 import { AntDesign, MaterialIcons} from '@expo/vector-icons';
 import { SIZES } from '../../Constants/Theme'
-import { Foundation } from '@expo/vector-icons';
-
+import { useEffect } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axiosInstance from '../../utils/axiosInstance';
+import { useContext } from 'react';
+import authContext from '../../Context/context';
 
 const CartScreen = ({navigation}) => {
 
-    const stars = [1,2,3,4]
+    const [product, setProduct] = useState(null)
 
-    let title, price;
-    title = "Novolog";
-    price = "$60";
+    const stars = [1,2,3,4]
+    
+    const {quantity, handleQuantityDecrement, handleQuantityIncrement} = useContext(authContext)
+  
+
+    useEffect(() => {
+        const getProducts = async () => {
+          try {
+            const id = await AsyncStorage.getItem("product_id")
+            const response = await axiosInstance.get(`/single-medicine/${id}`);
+            if (response.status === 200) {
+              const { medicine } = response.data;
+              setProduct(medicine);
+            } if(response.status === 401){
+                console.log("unauthorized")
+            }
+          } catch (error) {
+            console.log(error.response)
+            if(error.response.status === 401){
+                Alert.alert('Error⚠️', 'Unauthorized or session expired');;
+              }
+          }
+        };
+        getProducts();
+      }, []);
+
 
   return (
     <SafeAreaView style={styles.container}>
@@ -30,42 +56,47 @@ const CartScreen = ({navigation}) => {
         <View style={styles.cardMainContaimer}>
         <View style={styles.cardContainer}>
             <View style={styles.imageContainer}>
-                <Image source={require("../../assets/product 1.png")} style={styles.image}/>
+                <Image source={{uri:`https://pharmacy-ordering-server.onrender.com/${product?.file}`}} style={styles.image}/>
             </View>
             <View style={styles.starHeaderContainer}>
-                <Text style={styles.title}>{title}</Text>
+                <Text style={styles.title}>{product?.name}</Text>
             </View>
-            <Text style={styles.priceValue}>{price}</Text>
+            <Text style={styles.priceValue}>{product?.price}</Text>
         </View>
         </View>
         <View style={styles.plusminusBtnsContainer}>
-            <Pressable style={styles.plusminusBtn}>
+            <Pressable style={styles.plusminusBtn}
+            onPress={handleQuantityIncrement}
+            >
                 <Text style={styles.plusminusBtnText}>+</Text>
             </Pressable>
-            <Text style={styles.plusminusBtnValue}>1</Text>
-            <Pressable style={styles.plusminusBtn}>
+            <Text style={styles.plusminusBtnValue}>{quantity}</Text>
+            <Pressable style={styles.plusminusBtn}
+             onPress={handleQuantityDecrement}
+             disabled={quantity < 2 ? true: false}
+            >
                 <Text style={styles.plusminusBtnText}>-</Text>
             </Pressable>
         </View>
         </View>
         <View style={styles.priceInfoContainer}>
             <View style={styles.priceInfo}>
-                <Text style={styles.priceInfoText}>Sub Total</Text>
-                <Text style={styles.priceInfoValue}>18</Text>
+                <Text style={styles.priceInfoText}>Sub Total (Ghc)</Text>
+                <Text style={styles.priceInfoValue}>{product?.price * quantity}</Text>
             </View>
             <View style={styles.priceInfo}>
-                <Text style={styles.priceInfoText}>Delivery fee</Text>
-                <Text style={styles.priceInfoValue}>18</Text>
+                <Text style={styles.priceInfoText}>Delivery fee (Ghc)</Text>
+                <Text style={styles.priceInfoValue}>10</Text>
             </View>
-            <View style={styles.priceInfo}>
+            {/* <View style={styles.priceInfo}>
                <Text style={styles.priceInfoText}>Discount</Text>
                <Text style={styles.priceInfoValue}>18</Text>
-            </View>
+            </View> */}
         </View>
         <View style={styles.bottomBorder}></View>
         <View style={styles.bottomPriceInfoContainer}>
-          <Text style={styles.bottomPriceInfoText}>Sub Total</Text>
-          <Text style={styles.bottomPriceInfoValue}>18</Text>
+          <Text style={styles.bottomPriceInfoText}>Total (Ghc)</Text>
+          <Text style={styles.bottomPriceInfoValue}>{(product?.price * quantity) + 10}</Text>
         </View>
         <View style={styles.buttonContainer}>
         <Pressable
@@ -192,7 +223,7 @@ const styles = StyleSheet.create({
     },
     bottomPriceInfoContainer:{
         flexDirection:'row',
-        gap:SIZES.width*0.7,
+        gap:SIZES.width*0.65,
         margin:'3%',
         paddingTop:'5%'
     },

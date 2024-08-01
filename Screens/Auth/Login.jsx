@@ -5,6 +5,7 @@ import { LoadingModal } from "react-native-loading-modal";
 import { useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import * as Keychain from 'react-native-keychain';
 
 
 const Login = ({navigation}) => {
@@ -51,8 +52,9 @@ const Login = ({navigation}) => {
         navigation.navigate('Products');
       }
     } catch (error) {
-      console.log(error)
-      // Alert.alert('Invalid⚠️', 'Incorrect password or username');
+      if(error.response.status === 404){
+        Alert.alert("Not Found⚠️", "Incorrect password or username")
+      }
     } finally {
       setLoading(false);
     }

@@ -12,9 +12,10 @@ const Products = ({ navigation }) => {
     const [quantity, setQuantity] = useState(null);
     const [profile, setProfile] = useState(null)
 
-    const handleNavigate = (id) =>{
+    const handleNavigate = (id, price) =>{
         navigation.navigate("Product");
         AsyncStorage.setItem('product_id', id)
+        AsyncStorage.setItem("price", price.toString())
     }
 
     useEffect(() => {
@@ -83,7 +84,7 @@ const Products = ({ navigation }) => {
                     <Text style={styles.viewAllText}>View all</Text>
                 </View>
                 <ScrollView contentContainerStyle={styles.scrollViewContent}>
-                    <Card handleNavigate={(id) => handleNavigate(id)} />
+                    <Card handleNavigate={(id, price) => handleNavigate(id, price)} />
                 </ScrollView>
             </View>
         </SafeAreaView>

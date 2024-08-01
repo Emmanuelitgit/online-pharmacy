@@ -71,7 +71,7 @@ const OTP = ({ navigation }) => {
           <View style={styles.verifyTextContainer}>
             <Text style={styles.verifyHeader}>Verify your identity</Text>
             <Text style={styles.verifyText}>
-              Please enter the 6-digit OTP code we sent to your phone number 23324352936
+              Please enter the 6-digit OTP code we sent to your email {email}
             </Text>
             <Text style={styles.time}>3:00</Text>
           </View>

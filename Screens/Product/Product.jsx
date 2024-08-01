@@ -1,17 +1,45 @@
-import React from 'react'
-import { View, Text, SafeAreaView, StyleSheet, Image, StatusBar, Pressable, ScrollView } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { View, Text, SafeAreaView, StyleSheet, Image, StatusBar, Pressable, ScrollView,Alert } from 'react-native'
 import { SIZES } from '../../Constants/Theme'
 import { Foundation } from '@expo/vector-icons';
 import { AntDesign} from '@expo/vector-icons';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axiosInstance from '../../utils/axiosInstance';
+import * as Keychain from 'react-native-keychain';
+import authContext from '../../Context/context';
+import { useContext } from 'react';
 
 const Product = ({navigation}) => {
 
+    const [product, setProduct] = useState(null)
+
     const stars = [1,2,3,4]
 
-    let title, price;
-    title = "Novolog";
-    price = "$60";
+
+    const {quantity, handleQuantityDecrement, handleQuantityIncrement} = useContext(authContext)
+    
+
+    console.log(quantity)
+
+    useEffect(() => {
+        const getProducts = async () => {
+          try {
+            const id = await AsyncStorage.getItem("product_id")
+            const response = await axiosInstance.get(`/single-medicine/${id}`);
+            if (response.status === 200) {
+              const { medicine } = response.data;
+              setProduct(medicine);
+            } 
+          } catch (error) {
+            if(error.response.status === 401){
+                const {message} = error.response.data
+                Alert.alert("401",message)
+              }
+          }
+        };
+        getProducts();
+      }, []);
+
 
   return (
     <SafeAreaView style={styles.container}>
@@ -28,20 +56,20 @@ const Product = ({navigation}) => {
         </Pressable> 
         <View style={styles.cardContainer}>
             <View style={styles.imageContainer}>
-                <Image source={require("../../assets/product 1.png")} style={styles.image}/>
+                <Image source={{uri:`https://pharmacy-ordering-server.onrender.com/${product?.file}`}} style={styles.image}/>
             </View>
             <View style={styles.starHeaderContainer}>
-                <Text style={styles.title}>{title}</Text>
+                <Text style={styles.title}>{product?.name}</Text>
                <View style={styles.starsContainer}>
                {stars.map((star)=>(
                     <Foundation name="star" size={15} color="orange" key={star} />
                 ))}
                </View>
             </View>
-            <Text style={styles.priceValue}>{price}</Text>
+            <Text style={styles.priceValue}>{product?.price}</Text>
         </View>
         <View style={styles.descContainer}>
-            <Text style={styles.descHeader}>Novolong</Text>
+            <Text style={styles.descHeader}>{product?.name}</Text>
             <Text style={styles.descText}>
                Lufart is a highly effective antimalarial 
                medication used to treat uncomplicated 
@@ -53,11 +81,16 @@ const Product = ({navigation}) => {
             </Text>
         </View>
         <View style={styles.plusminusBtnsContainer}>
-            <Pressable style={styles.plusminusBtn}>
+            <Pressable style={styles.plusminusBtn}
+            onPress={handleQuantityIncrement}
+            >
                 <Text style={styles.plusminusBtnText}>+</Text>
             </Pressable>
-            <Text style={styles.plusminusBtnValue}>1</Text>
-            <Pressable style={styles.plusminusBtn}>
+            <Text style={styles.plusminusBtnValue}>{quantity}</Text>
+            <Pressable style={styles.plusminusBtn}
+            onPress={handleQuantityDecrement}
+            disabled={quantity < 2 ? true: false}
+            >
                 <Text style={styles.plusminusBtnText}>-</Text>
             </Pressable>
         </View>

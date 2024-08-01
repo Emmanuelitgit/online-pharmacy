@@ -82,8 +82,8 @@ const Profile = ({navigation}) => {
               }      
             </View>
             <View>
-                <Text>{profile.name}</Text>
-                <Text>{profile.phone}</Text>
+                <Text>{profile?.name}</Text>
+                <Text>{profile?.phone}</Text>
             </View>
         </View>
         <View style={styles.accountInfoContainer}>
